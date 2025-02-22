@@ -1,11 +1,7 @@
-'use client'
+'use client';
 import { cn } from "@/lib/utils";
-import { BackgroundGradientAnimation } from "./GradientBg";
-import { useState } from "react";
-import Lottie from "react-lottie";
-import animationData from '@/data/confetti.json';
-import MagicButton from "./MagicButton";
-import { IoCopyOutline } from "react-icons/io5";
+import { useState, useEffect } from "react";
+import { IoCloseOutline } from "react-icons/io5";
 
 export const BentoGrid = ({
   className,
@@ -17,7 +13,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-2 gap-4 xl:grid-cols-3 mx-auto ",
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-auto auto-rows-min",
         className
       )}
     >
@@ -31,144 +27,89 @@ export const BentoGridItem = ({
   title,
   description,
   id,
-  img , 
-  imgClassName , 
-  titleClassName , 
-  spareImg ,
+  img,
+  imgClassName,
+  titleClassName,
+  spareImg,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
-  header?: React.ReactNode;
-  icon?: React.ReactNode;
-  id? : number,
-  img? : string ;
-  imgClassName? : string ;
-  titleClassName? : string ;
-  spareImg? : string ;
+  id?: number;
+  img?: string | string[];
+  imgClassName?: string;
+  titleClassName?: string;
+  spareImg?: string;
 }) => {
-    const [copied, setcopied] = useState(false);
-    const handleCopy = () => {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-        navigator.clipboard.writeText('info@ccorigins.com');
-        setcopied(true);
+  const images = id === 6 && Array.isArray(img) ? img : [];
+
+  useEffect(() => {
+    if (id === 6 && images.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 3000);
+      return () => clearInterval(interval);
     }
+  }, [id, images]);
+
+  const toggleImagePopup = () => {
+    setIsImageOpen(!isImageOpen);
+  };
+
   return (
     <div
       className={cn(
-        "row-span-1 relative overflow-hidden rounded-3xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4 border border-white/[0.1] flex-wrap",
+        "relative overflow-hidden rounded-3xl group/bento hover:shadow-xl transition duration-300 shadow-input dark:shadow-none flex flex-col border border-white/[0.1] p-4",
+        "h-full min-h-[250px]", // Ensure the item is fully filled
         className
       )}
-      style = {{
-        background: 'rgb(10, 25, 47)',
-        backgroundColor: 'linear-gradient(0deg, rgba(255, 223, 0, 1) 0%, rgba(9, 33, 77, 1) 100%)',
-        
-
-        
-      }}
     >
-        <div className = {`${id === 6 && 'flex justify-center'} h-full`}>
-            <div className="w-full h-full absolute">
-                {
-                    img && 
-                    (
-                     <img
-                        src = {img}
-                        alt = {img}
-                        className = {cn(imgClassName , 'object-cover , object-center')}
-
-                     />
-                    )
-                }
-
-            </div>
-            <div className = {`relative right-0 -bottom-5 ${id === 5 && 'w-full opacity-80'}`}>
-                {spareImg && (
-                    <img
-                    src = {spareImg}
-                        alt = {spareImg}
-                        className = {'object-cover , object-center w-full h-full'}
-                        />
-                )}
-            </div>
-            
-            {
-                id === 6 && 
-                ( 
-                    <BackgroundGradientAnimation>
-                        {/*<div className=" absolute z-50 flex item-center justify-center text-white font-bold" /> */}
-                    </BackgroundGradientAnimation>
-                )
-            }
-            <div className={cn(
-                titleClassName , 'group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10'
-            )}>
-                <div className="font-sans font-extralight text-[#E5D9F2] text-sm md:text-xs lg:text-base">
-                    {description}
-                </div>
-                <div className="font-sans font-bold text-lg lg:text-2xl max-w-96 z-10">
-                {title}
-                </div>
-
-            
-            {id === 3 && (
-                <div className="flex gap-1 lg:gap-5 w-fit absolute -right-3 lg:-right-2">
-                    <div className="flex flex-col gap-3 lg:gap-8">
-                        {['Photoshop' , 'Illustrator' , 'SketchUp'].map
-                        ((item) =>(
-                            <span key={item} className="py-2 lg:py-3 lg:px-3 px-3 text-xs lg:text-base opacity-50 lg:opacity-250 rounded-lg text-center bg-[#2A004E]">
-                                {item}
-                            </span>
-                        ))}
-                        <span   className="py-4 px-3 rounded-lg text-center bg-[#2A004E]"/>
-                        </div>
-                        <div className="flex flex-col gap-3 lg:gap-8">
-                            <span className="py-4 px-3 rounded-lg text-center bg-[#2A004E]"/>
-
-                        {['3ds Max' , 'D5 Render' , 'Figma'].map
-                        ((item) =>(
-                            <span key={item} className="py-2 lg:py-4 lg:px-3 px-3 text-xs lg:text-base opacity-50 lg:opacity-150 rounded-lg text-center bg-[#2A004E]">
-                                {item}
-                            </span>
-                        ))}
-                        
-                        </div>
-
-                </div>
+      <div className="relative w-full h-full flex justify-center">
+        {id === 6 && images.length > 0 ? (
+          <img
+            src={images[currentImageIndex]}
+            alt={`Sliding Image ${currentImageIndex + 1}`}
+            className={cn(
+              imgClassName,
+              "object-cover object-center w-full h-full rounded-3xl transition-opacity duration-1000 ease-in-out"
             )}
-            {id === 2 && (
-                <div className="flex gap-1 lg:gap-5 w-fit absolute -right-3 lg:-right-2">
-                    
-                        
-                </div>
-            )}
-            {id === 6 && (
-                <div className="mt-5 relative">
-                    <div className={`absolute -bottom-5 right-0`}>
-                        <Lottie options={{
-                            loop : copied,
-                            autoplay : copied,
-                            animationData,
-                            rendererSettings : {
-                                preserveAspectRatio : 'xMidYMid slice',
-                            }
-                        }}/>
-                        </div>
-                        <MagicButton 
-                        title = {copied ? 'Email Locked and Loaded!' : 'Grab our Email'}
-                        icon = {<IoCopyOutline />}
-                        position="left"
-                        
-                        handleclick={handleCopy}
-                        />
-                    </div>
-            )}
-            
+          />
+        ) : (
+          img &&
+          typeof img === "string" && (
+            <img
+              src={img}
+              alt="Static Image"
+              className={cn(
+                imgClassName,
+                "object-cover object-center w-full h-full rounded-3xl cursor-pointer"
+              )}
+              onClick={toggleImagePopup}
+            />
+          )
+        )}
+      </div>
 
+      {isImageOpen && img && typeof img === "string" && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <div className="relative">
+            <img
+              src={img}
+              alt="Popup Image"
+              className="max-w-[90vw] max-h-[90vh] object-cover object-center rounded-lg"
+            />
+            <button
+              className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md text-black hover:bg-gray-200"
+              onClick={toggleImagePopup}
+            >
+              <IoCloseOutline size={24} />
+            </button>
+          </div>
         </div>
-      
-      
-    </div>
+      )}
     </div>
   );
 };

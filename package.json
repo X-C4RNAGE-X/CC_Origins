@@ -15,6 +15,7 @@
     "@sentry/nextjs": "^8.50.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "emailjs-com": "^3.2.0",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.473.0",
     "mini-svg-data-uri": "^1.4.4",
@@ -28,7 +29,8 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.156.1",
-    "three-globe": "^2.41.0"
+    "three-globe": "^2.41.0",
+    "vercel": "^41.1.4"
   },
   "devDependencies": {
     "@types/node": "^20",

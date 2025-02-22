@@ -9,8 +9,8 @@ const RecentProject = () => {
   return (
     <div className=" py-40" id="projects">
       <h1 className="heading font-semibold">
-        Selection of {' '}
-        <span className="text-yellow-300">recent projects</span>
+        Our {' '}
+        <span className="text-yellow-300"> Works</span>
       </h1>
       <div className=" flex flex-wrap items-center justify-center p-4 gap-x-24 gap-y-8 mt-10">
         {projects.map(({id , title , des , img , link}) => (
@@ -18,7 +18,7 @@ const RecentProject = () => {
                 <PinContainer title={link}>
                   <a href={link}>
                     <div className='relative flex items-center justify-center sm:w-[570px] w-[80vw] overflow-hidden sm:h-[40vh] h-[30vh] mb-10'>
-                        <div className="relative w-full h-full overflow-hidden lg:rounded-3xl bg-[#13162d]">
+                        <div className="relative w-full h-full overflow-hidden lg:rounded-3xl bg-[#31363F]">
                             
                         </div>
                         <img 

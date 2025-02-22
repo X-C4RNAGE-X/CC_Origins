@@ -1,4 +1,4 @@
-
+'use client';
 export const navItems = [
     { name: "About", link: "#about" },
     { name: "Projects", link: "#projects" },
@@ -11,7 +11,7 @@ export const navItems = [
       id: 1,
       title: "",
       description: "",
-      className: "xl:col-span-2 md:col-span-6 md:row-span-2 xl:min-h-[60vh] ",
+      className: "xl:col-span-2 md:col-span-6 md:row-span-2 xl:min-h-[60vh]",
       imgClassName: "w-full h-full",
       titleClassName: "justify-end",
       img: "Pix 01.jpg",
@@ -21,24 +21,12 @@ export const navItems = [
       id: 2,
       title: "",
       description: "",
-      className: "lg:col-span-1 md:col-span-6 md:row-span-0",
+      className: "lg:row-span-2 lg:col-span-1 md:col-span-3 md:row-span-auto", // Fixed spacing
       imgClassName: "",
       titleClassName: "justify-start",
       img: "Pix 04.jpg",
       spareImg: "",
     },
-    {
-      id: 3,
-      title: "Services & Tools",
-      description: " We Constantly try to improve",
-      className: "lg:col-span-1 md:col-span-6 md:row-span-0",
-      imgClassName: "",
-      titleClassName: "justify-center",
-      img: "",
-      spareImg: "",
-    },
-    
-  
     {
       id: 5,
       title: "",
@@ -51,15 +39,16 @@ export const navItems = [
     },
     {
       id: 6,
-      title: "Do you want to start a project together?",
+      title: "",
       description: "",
-      className: "xl:col-span-1 xl:row-span-2 md:col-span-6 md:row-span-2",
+      className: "xl:col-span-1 xl:row-span-2 md:col-span-3 md:row-span-6", // Fixed gap issue
       imgClassName: "",
       titleClassName: "justify-center md:max-w-full max-w-60 text-center",
-      img: "",
+      img: ["Foodindia Expo 01.jpg", "Foodindia Expo 02.jpg", "Foodindia Expo 03.jpg"],
       spareImg: "",
     },
   ];
+  
   
   export const projects = [
     {
@@ -178,6 +167,19 @@ export const navItems = [
       img: "Nalaji Niryaat Logo.png",
       nameImg: "/appName.svg",
     },
+    {
+      id: 9,
+      name: "T&I",
+      img: "T&I Logo.png",
+      nameImg: "/appName.svg",
+    },
+    {
+      id: 10,
+      name: "Wadbros",
+      img: "Wadbros Logo.png",
+      nameImg: "/appName.svg",
+    },
+    
   ];
   
   export const workExperience = [
@@ -216,7 +218,7 @@ export const navItems = [
       id: 1,
       img: "/Fb Logo.png",
       alt: "Facebook",
-      link : "/",
+      link : "https://www.facebook.com/ccoriginskol",
     },
     {
       id: 2,

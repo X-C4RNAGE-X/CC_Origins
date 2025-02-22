@@ -1,59 +1,74 @@
 "use client";
-import React, { useState, ReactNode } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "framer-motion";
-import { cn } from "@/lib/utils";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { FiMenu, FiX } from "react-icons/fi";
 
 export const FloatingNav = ({
   navItems,
-  className,
+  className = "",
 }: {
-  navItems: {
-    name: string;
-    link: string;
-    icon?: ReactNode; // Changed JSX.Element to ReactNode
-  }[];
+  navItems: { name: string; link: string }[];
   className?: string;
 }) => {
-  const { scrollYProgress } = useScroll();
-  const [visible, setVisible] = useState(false);
-
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (typeof current === "number") {
-      let direction = current - (scrollYProgress.getPrevious() ?? 0);
-
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(false);
-      } else {
-        setVisible(direction < 0);
-      }
-    }
-  });
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <AnimatePresence mode="wait">
-      <div
-        className={cn(
-          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border rounded-full shadow-lg z-[5000] px-10 py-5 items-center justify-center space-x-4 border-white/[0.2] bg-black",
-          className
+    <>
+      {/* Blur Overlay when menu is open */}
+      <AnimatePresence>
+        {isOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-md z-[4000] duration-200"
+            onClick={() => setIsOpen(false)} // Close when clicking outside
+          />
         )}
-      >
-        {navItems.map((navItem, idx) => (
-          <Link
-            key={`link=${idx}`}
-            href={navItem.link}
-            className="relative dark:text-neutral-50 flex items-center space-x-1 text-neutral-600 hover:text-neutral-500"
+      </AnimatePresence>
+
+      {/* Navbar Toggle Button (Hidden when menu is open) */}
+      {!isOpen && (
+        <div className="fixed top-5 right-5 z-[5000]">
+          <button
+            className="p-3 rounded-full bg-black/80 text-white hover:bg-black/90 focus:outline-none"
+            onClick={() => setIsOpen(true)}
           >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="text-sm cursor-pointer">{navItem.name}</span>
-          </Link>
-        ))}
-      </div>
-    </AnimatePresence>
+            <FiMenu size={28} />
+          </button>
+        </div>
+      )}
+
+      {/* Slide-in Navbar from the Right */}
+      <AnimatePresence>
+        {isOpen && (
+          <div
+            className={`fixed top-0 right-0 w-[300px] h-screen bg-black/90 text-white shadow-lg p-8 space-y-8 z-[5001] flex flex-col ${className}`}
+          >
+            {/* Close (X) Button */}
+            <div className="flex justify-end">
+              <button
+                className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-all"
+                onClick={() => setIsOpen(false)}
+              >
+                <FiX size={28} />
+              </button>
+            </div>
+
+            {/* Navbar Items */}
+            <nav className="flex flex-col space-y-6">
+              {navItems.map((navItem, idx) => (
+                <Link
+                  key={idx}
+                  href={navItem.link}
+                  className="block text-2xl font-semibold tracking-wide hover:text-yellow-400 transition-all duration-300 transform hover:scale-105"
+                  onClick={() => setIsOpen(false)} // Close menu on click
+                >
+                  {navItem.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

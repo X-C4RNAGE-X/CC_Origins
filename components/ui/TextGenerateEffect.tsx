@@ -40,7 +40,7 @@ export const TextGenerateEffect = ({
           <span
             key={word + idx}
             className={cn(
-              idx > 6 ? "text-yellow-300" : "dark:text-white text-black",
+              idx > 4 ? "text-yellow-300" : "text-white",
               "opacity-0" // ✅ Ensure className is correctly passed
             )}
             
